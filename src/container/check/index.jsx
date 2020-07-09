@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 export const selfinfo = () => {
   return (
     <div>
-      
+      签到
     </div>
   )
 }

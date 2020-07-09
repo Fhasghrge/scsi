@@ -6,16 +6,11 @@
   main {
     flex: 7;
     padding: 10px 40px;
-    border: 1px solid red;
     width: max-content;
     height: 100vh;
     overflow-y: scroll;
     &::-webkit-scrollbar{
       display: none;
-    }
-    p {
-      height: 200vh;
-      border: 1px solid green;
     }
   }
 }
