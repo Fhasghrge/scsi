@@ -92,7 +92,6 @@ export default class UserTable extends React.Component {
             {
                 title: '用户ID',
                 dataIndex: 'user_id',
-                editable: true,
             },
             {
                 title: '用户名',
@@ -102,12 +101,12 @@ export default class UserTable extends React.Component {
             },
             {
                 title: '密码',
-                dataIndex: 'user_passwd',
+                dataIndex: 'user_password',
                 editable: true,
             },
             {
                 title: '职级',
-                dataIndex: 'user_position',
+                dataIndex: 'post',
                 editable: true,
             },
             {
@@ -147,13 +146,13 @@ export default class UserTable extends React.Component {
 
     handleDelete = async (key) => {
         try {
+            const bodyFormData = new FormData();
+            bodyFormData.set('dele_userid', key);
             const resdelete = await axios({
                 method: 'post',
-                url: '/HR//users/delete',
+                url: `/HR//users/delete/${key}`,
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    dele_userid: key,
-                },
+                data: bodyFormData,
             });
             if (resdelete.data.code === 0) {
                 message.success('删除成功');
@@ -169,37 +168,64 @@ export default class UserTable extends React.Component {
         }
     };
 
-    handleAdd = () => {
-        const { count, dataSource } = this.state;
-        const newData = {
-            user_id: '默认',
-            user_name: '默认',
-            user_passwd: '默认',
-            user_position: '默认',
-            user_email: '默认',
-            user_tel: '默认',
-            user_salary: '默认',
-        };
-        this.setState({
-            dataSource: [newData, ...dataSource],
-            count: count + 1,
-        });
+    // handleAdd = () => {
+    //     const { count, dataSource } = this.state;
+    //     const newData = {
+    //         user_id: '默认',
+    //         user_name: '默认',
+    //         user_passwd: '默认',
+    //         user_position: '默认',
+    //         user_email: '默认',
+    //         user_tel: '默认',
+    //         user_salary: '默认',
+    //     };
+    //     this.setState({
+    //         dataSource: [newData, ...dataSource],
+    //         count: count + 1,
+    //     });
+    // };
+    handleAdd = async () => {
+        try {
+            const bodyFormData = new FormData();
+            bodyFormData.set('user_id', 2020002);
+            bodyFormData.set('user_name', '23422');
+            bodyFormData.set('user_passwd', '123456');
+            bodyFormData.set('user_post', '保洁');
+            bodyFormData.set('user_email', '123456@163.com');
+            bodyFormData.set('user_tel', '13212345678');
+            bodyFormData.set('user_salary', 4000);
+            bodyFormData.set('user_role', "普通员工");
+            const addres = await axios({
+                method: 'post',
+                url: '/HR/users/add',
+                headers: { 'Content-Type': 'multipart/form-data' },
+                data: bodyFormData,
+            });
+            if (addres.data.code === 0) {
+                message.success('新增成功！');
+            } else {
+                message.warning(addres.data.msg);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     handleSave = async (row) => {
+        console.log(row);
         try {
+            const bodyFormData = new FormData();
+            bodyFormData.set('user_name', row.user_name);
+            bodyFormData.set('user_passwd', row.user_password);
+            bodyFormData.set('user_post', row.post);
+            bodyFormData.set('user_email', row.user_email);
+            bodyFormData.set('user_tel', row.user_tel);
+            bodyFormData.set('user_salary', row.user_salary);
             const res = await axios({
                 method: 'post',
-                url: '/HR/users/update',
+                url: `/HR/users/update/${row.user_id}`,
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    user_id: row.user_id,
-                    user_passwd: row.user_passwd,
-                    user_email: row.user_email,
-                    user_tel: row.user_tel,
-                    user_salary: row.user_salary,
-                    user_post: row.user_position,
-                },
+                data: bodyFormData,
             });
             if (res.data.code === 0) {
                 message.success(res.data.msg);
@@ -214,7 +240,7 @@ export default class UserTable extends React.Component {
                 message.warning(res.data.msg);
             }
         } catch (err) {
-            message.error(err);
+            console.log(err);
         }
     };
     componentDidMount() {

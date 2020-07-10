@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Table, message } from 'antd';
+import { Table } from 'antd';
 import axios from 'axios';
 
 const columns = [
@@ -40,14 +40,14 @@ const Mycheck = () => {
                 });
                 console.log(resLists);
                 if (resLists.data.code === 0) {
-                    const appendances = resLists.data.data.appendances;
-                    appendances.forEach((item) => {
+                    const attendances = resLists.data.data.attendances;
+                    attendances.forEach((item) => {
                         item.key = item.attendance_date;
                     });
-                    setData(appendances);
+                    setData(attendances);
                 }
             } catch (err) {
-                message.err(err);
+                console.log(err);
             }
         }
         getChecklist();

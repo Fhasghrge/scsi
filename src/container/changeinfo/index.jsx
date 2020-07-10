@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Input, Button, message } from 'antd';
 import axios from 'axios';
+import JSEncrypt from 'jsencrypt'
 const layout = {
     labelCol: {
         span: 2,
@@ -11,18 +12,26 @@ const layout = {
     },
 };
 const ChangeInfo = () => {
-    const onFinish = async ({ username, passwd, tel, email }) => {
+    const onFinish = async (row) => {
+        const { username, passwd, tel, email } = row.user
         try {
+            let encryptor = new JSEncrypt();
+            const publicKey =`MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCp+NRbK1GutOJvqL1pWtdiwo+u
+                            8dPfpFBh2RejZrTOaYtpjt+ljr9QQoS3O/rM10t2jia+ARGgbVJ2X43W51dRMMBE
+                            bc5JugnOba+i1GWOrb4SIxHOrDg47vkhRCoND9YMJe8IM+kwu5Husts+fAVZeJdi
+                            P7KBqrAF4pdULl9gywIDAQAB`
+            encryptor.setPublicKey(publicKey);
+            let rsaPassWord = encryptor.encrypt(passwd);
+            const bodyFormData = new FormData();
+            bodyFormData.set('user_name', username)
+            bodyFormData.set('user_password', rsaPassWord)
+            bodyFormData.set('user_email', email)
+            bodyFormData.set('user_tel', tel)
             const res = await axios({
                 method: 'post',
                 url: '/office/users/update/now',
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    user_name: username,
-                    user_password: passwd,
-                    user_email: email,
-                    user_tel: tel,
-                },
+                data: bodyFormData
             });
             if (res.data.code === 0) {
                 message.success('修改成功！');

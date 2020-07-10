@@ -91,7 +91,7 @@ export default class UserTable extends React.Component {
         this.columns = [
             {
                 title: '考勤ID',
-                dataIndex: 'attendance_id',
+                dataIndex: 'user_attendance_id',
                 editable: true,
             },
             {
@@ -144,11 +144,8 @@ export default class UserTable extends React.Component {
         try {
             const resdelete = await axios({
                 method: 'post',
-                url: '/financial/attendances/delete',
+                url: `/financial/attendances/delete/${key}`,
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    id: key,
-                },
             });
             if (resdelete.data.code === 0) {
                 message.success('删除成功');
@@ -164,36 +161,62 @@ export default class UserTable extends React.Component {
         }
     };
 
-    handleAdd = () => {
-        const { count, dataSource } = this.state;
-        const newData = {
-            attendance_id: -1,
-            user_id: -1,
-            user_name: 'default',
-            attendance_date: 'default',
-            attendance_time: -1,
-            attendance_status: -1,
-        };
-        this.setState({
-            dataSource: [newData, ...dataSource],
-            count: count + 1,
-        });
+    handleAdd = async () => {
+        try {
+            const bodyFormData = new FormData();
+            bodyFormData.set('user_id', 2020012);
+            bodyFormData.set('attendance_status', 2);
+            bodyFormData.set('attendance_time', 1);
+            bodyFormData.set('attendance_date', '2018-01-01');
+            const addres = await axios({
+                method: 'post',
+                url: '/financial/attendances/add',
+                headers: { 'Content-Type': 'multipart/form-data' },
+                data: bodyFormData,
+            });
+            if (addres.data.code === 0) {
+                message.success('新增成功！');
+                // const { count, dataSource } = this.state;
+                // const newData = {
+                //     user_attendance_id: -1,
+                //     user_id: -1,
+                //     user_name: 'default',
+                //     attendance_date: 'default',
+                //     attendance_time: -1,
+                //     attendance_status: -1,
+                // };
+                // this.setState({
+                //     dataSource: [newData, ...dataSource],
+                //     count: count + 1,
+                // });
+            } else {
+                message.warning(addres.data.msg);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     handleSave = async (row) => {
         console.log(row);
         try {
-            const { attendance_time, attendance_status, attendance_date } = row;
+            const {
+                user_attendance_id,
+                user_id,
+                attendance_time,
+                attendance_status,
+                attendance_date,
+            } = row;
+            const bodyFormData = new FormData();
+            bodyFormData.set('user_id', user_id);
+            bodyFormData.set('attendance_time', attendance_time);
+            bodyFormData.set('attendance_status', attendance_status);
+            bodyFormData.set('attendance_date', attendance_date);
             const res = await axios({
                 method: 'post',
-                url: '/financial/attendances/update',
+                url: `/financial/attendances/update/${user_attendance_id}`,
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    user_id: row.user_id,
-                    attendance_time,
-                    attendance_status,
-                    attendance_date,
-                },
+                data: bodyFormData,
             });
             if (res.data.code === 0) {
                 message.success('修改成功!');
@@ -208,25 +231,19 @@ export default class UserTable extends React.Component {
                 message.warning(res.data.msg);
             }
         } catch (err) {
-            message.error(err);
+            console.log(err);
         }
     };
     componentDidMount() {
         axios({
-            method: 'get',
+            method: 'post',
             headers: { 'Content-Type': 'multipart/form-data' },
-            url: '/attendances',
-            data: {
-                size:20,
-                p :1,
-                user_name:'张三',
-                data:'2020-7-8'
-            }
+            url: '/financial/attendances/get',
         }).then((res) => {
             if (res.data.code === 0) {
                 const lists = res.data.data.attendances;
                 lists.forEach((item) => {
-                    item.key = item.attendance_id;
+                    item.key = item.user_attendance_id;
                 });
                 this.setState({
                     dataSource: lists,

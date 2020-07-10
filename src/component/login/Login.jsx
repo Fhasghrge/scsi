@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import JSEncrypt from 'jsencrypt'
 
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -16,14 +17,21 @@ const Login = (props) => {
     const onFinish = async (values) => {
         try {
             const { username, password } = values;
+            let encryptor = new JSEncrypt();
+            const publicKey =`MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCp+NRbK1GutOJvqL1pWtdiwo+u
+                            8dPfpFBh2RejZrTOaYtpjt+ljr9QQoS3O/rM10t2jia+ARGgbVJ2X43W51dRMMBE
+                            bc5JugnOba+i1GWOrb4SIxHOrDg47vkhRCoND9YMJe8IM+kwu5Husts+fAVZeJdi
+                            P7KBqrAF4pdULl9gywIDAQAB`
+            encryptor.setPublicKey(publicKey);
+            let rsaPassWord = encryptor.encrypt(password);
+            const bodyFormData = new FormData();
+            bodyFormData.set('username', username)
+            bodyFormData.set('password', rsaPassWord)
             const userinfo = await axios({
                 method: 'post',
                 url: '/login',
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    username: username,
-                    passwd: password,
-                },
+                data: bodyFormData
             });
             if (userinfo.data.code === 0) {
                 props.login(userinfo.data.data.loginUser, {

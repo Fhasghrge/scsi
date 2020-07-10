@@ -121,13 +121,13 @@ class RolesTable extends React.Component {
 
     handleDelete = async (key) => {
         try {
+            const bodyFormData = new FormData();
+            bodyFormData.set('delete_userRoleId', key);
             const resdelete = await axios({
                 method: 'post',
-                url: '/HR/userRole/delete',
+                url: `/HR/userRole/delete/${key}`,
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    delete_userRoleId: key,
-                },
+                data: bodyFormData,
             });
             if (resdelete.data.code === 0) {
                 message.success('删除成功');
@@ -142,30 +142,17 @@ class RolesTable extends React.Component {
             message.error('删除失败');
         }
     };
-
-    handleAdd = () => {
-        const { count, dataSource } = this.state;
-        const newData = {
-            role_id: '默认',
-            role_name: '默认',
-        };
-        this.setState({
-            dataSource: [newData, ...dataSource],
-            count: count + 1,
-        });
-    };
-
     handleSave = async (row) => {
         try {
             console.log(row);
+            const bodyFormData = new FormData();
+            bodyFormData.set('role_id', row.role_id);
+            bodyFormData.set('user_id', this.props.user_id);
             const res = await axios({
                 method: 'post',
                 url: '/HR/userRole/update/10',
                 headers: { 'Content-Type': 'multipart/form-data' },
-                data: {
-                    role_id: row.role_id,
-                    user_id: this.props.user_id,
-                },
+                data: bodyFormData,
             });
             if (res.data.code === 0) {
                 message.success(res.data.msg);
@@ -185,7 +172,7 @@ class RolesTable extends React.Component {
     };
     componentDidMount() {
         axios({
-            method: 'post',
+            method: 'get',
             headers: { 'Content-Type': 'multipart/form-data' },
             url: '/HR/role',
         }).then((res) => {
@@ -228,15 +215,6 @@ class RolesTable extends React.Component {
         });
         return (
             <div>
-                <Button
-                    onClick={this.handleAdd}
-                    type="primary"
-                    style={{
-                        marginBottom: 16,
-                    }}
-                >
-                    新增用户
-                </Button>
                 <Table
                     components={components}
                     rowClassName={() => 'editable-row'}
