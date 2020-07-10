@@ -13,6 +13,16 @@ import './mock/login.js'
 import './mock/userinfo.js'
 import './mock/todaysigninfo.js'
 import './mock/changeinfo.js'
+import './mock/mychecklists.js'
+import './mock/userList.js'
+import './mock/updateuser.js'
+import './mock/deleteuser.js'
+import './mock/roles.js'
+import './mock/updaterole.js'
+import './mock/delerole.js'
+import './mock/deletecheck'
+import './mock/checklist'
+import './mock/updatecheck'
 
 ReactDOM.render(
   <Provider store={store}>

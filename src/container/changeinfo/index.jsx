@@ -16,6 +16,7 @@ const ChangeInfo = () => {
             const res = await axios({
                 method: 'post',
                 url: '/office/users/update/now',
+                headers: { 'Content-Type': 'multipart/form-data' },
                 data: {
                     user_name: username,
                     user_password: passwd,

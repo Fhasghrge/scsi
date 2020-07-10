@@ -10,10 +10,12 @@ const Selfinfo = (props) => {
         async function getinfo() {
             const resUserinfo = await axios({
                 method: 'post',
+                headers: { 'Content-Type': 'multipart/form-data' },
                 url: '/office/users/get/now',
             });
             const resSigninfo = await axios({
                 method: 'post',
+                headers: { 'Content-Type': 'multipart/form-data' },
                 url: '/office/attendances/get/now-today',
             });
             if (resUserinfo.data.code === 0) {

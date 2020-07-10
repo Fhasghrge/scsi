@@ -8,7 +8,7 @@ const initData = {
     password: 'defau',
     role_name: [],
   },
-  login: true,
+  login: false,
 }
 
 const reducer = (state = initData, action) => {

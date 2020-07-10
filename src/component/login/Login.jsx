@@ -19,6 +19,7 @@ const Login = (props) => {
             const userinfo = await axios({
                 method: 'post',
                 url: '/login',
+                headers: { 'Content-Type': 'multipart/form-data' },
                 data: {
                     username: username,
                     passwd: password,

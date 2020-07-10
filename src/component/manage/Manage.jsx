@@ -7,13 +7,15 @@ import {
     MoneyCollectOutlined,
 } from '@ant-design/icons';
 import './Manage.scss';
+import Check from '../../container/check/index'
+
 const Main = lazy(() => import(/* webpackChunkName: "about"*/ '../Main.jsx'));
 
 const { SubMenu } = Menu;
 
 const Manage = (props) => {
     const [openKeys, SetOpenKeys] = useState(['sub1']);
-    const [key, setKey] = useState(2);
+    const [key, setKey] = useState(6);
     const rootSubmenuKeys = ['sub1', 'sub2', 'sub3'];
     const { islogin } = props;
     const onOpenChange = (openKeys) => {
@@ -79,6 +81,7 @@ const Manage = (props) => {
                 <Suspense fallback={<div>loading...</div>}>
                     <Main which={key}></Main>
                 </Suspense>
+                <Check/>
             </main>
         </div>
     );

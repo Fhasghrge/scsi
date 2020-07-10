@@ -1,7 +1,5 @@
 // 使用 Mock
 import Mock from 'mockjs'
-
-
 export default Mock.mock('/login', 'post', {
     code: 0,
     data: {
