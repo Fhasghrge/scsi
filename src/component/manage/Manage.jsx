@@ -15,7 +15,7 @@ const { SubMenu } = Menu;
 
 const Manage = (props) => {
     const [openKeys, SetOpenKeys] = useState(['sub1']);
-    const [key, setKey] = useState(4);
+    const [key, setKey] = useState(1);
     const rootSubmenuKeys = ['sub1', 'sub2', 'sub3'];
     const { islogin } = props;
     const onOpenChange = (openKeys) => {

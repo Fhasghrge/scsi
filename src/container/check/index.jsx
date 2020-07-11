@@ -9,8 +9,8 @@ export const Check = () => {
     const [lodding, setLodding] = useState(false);
     const time = () => {
         const MorAftEve = new Date().getHours();
-        if (MorAftEve >= 3 && MorAftEve < 11) return 1;
-        else if (MorAftEve >= 11 && MorAftEve < 19) return 2;
+        if (MorAftEve >= 0 && MorAftEve < 11) return 1;
+        else if (MorAftEve >= 11 && MorAftEve < 16) return 2;
         else return 3;
     };
     const onChange = async (check) => {

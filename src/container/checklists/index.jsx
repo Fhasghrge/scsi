@@ -111,7 +111,7 @@ export default class UserTable extends React.Component {
                 editable: true,
             },
             {
-                title: '考勤次数',
+                title: '考勤时段',
                 dataIndex: 'attendance_time',
                 editable: true,
             },
