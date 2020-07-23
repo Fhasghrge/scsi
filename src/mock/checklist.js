@@ -2,7 +2,7 @@
 import Mock from 'mockjs'
 
 
-export default Mock.mock('/attendances', 'get', {
+export default Mock.mock('/financial/attendances/get', 'post', {
     code: 0,
     data: {
         attendances: [

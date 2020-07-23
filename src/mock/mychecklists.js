@@ -5,7 +5,7 @@ import Mock from 'mockjs'
 export default Mock.mock('/office/attendances/get/now', 'post', {
     code: 0,
     data: {
-        appendances: [
+        attendances: [
             {
                 user_id: 202011,
                 user_name: "张三",

@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, message } from 'antd';
+import { Table, Input, Popconfirm, Form, message } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
@@ -108,7 +108,7 @@ class RolesTable extends React.Component {
                             title="确定删除？"
                             onConfirm={() => this.handleDelete(record.key)}
                         >
-                            <a>删除</a>
+                            删除
                         </Popconfirm>
                     ) : null,
             },

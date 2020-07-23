@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import './Manage.scss';
 import Check from '../../container/check/index'
+import Loading from '../../container/Loading/index'
 
 const Main = lazy(() => import(/* webpackChunkName: "about"*/ '../Main.jsx'));
 
@@ -78,7 +79,7 @@ const Manage = (props) => {
             </Menu>
             <main>
                 {/* waiting for beautify the transform */}
-                <Suspense fallback={<div>loading...</div>}>
+                <Suspense fallback={<Loading/>}>
                     <Main which={key}></Main>
                 </Suspense>
                 <Check/>

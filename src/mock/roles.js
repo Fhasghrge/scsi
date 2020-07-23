@@ -2,7 +2,7 @@
 import Mock from 'mockjs'
 
 
-export default Mock.mock('/HR/role', 'post', {
+export default Mock.mock('/HR/role', 'get', {
     code: 0,
     msg: "操作成功",
     data: {
